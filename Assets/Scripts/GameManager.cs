@@ -49,7 +49,8 @@ namespace Completed
 			boardScript = GetComponent<BoardManager>();
 
 			//Call the InitGame function to initialize the first level (useful in standalone only !!)
-      //InitGame();
+      level = 1;
+      InitGame();
 		}
 
         //this is called only once, and the paramter tell it to be called only after the scene was loaded
