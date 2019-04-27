@@ -14,7 +14,8 @@ using System.Collections;
 
 		public Timer timerInGame;
 		private Text levelText;									//Text to display current level number.
-		private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
+		private Text moneyText;
+    private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
 		private int level = 0;									//Current level number, expressed in game as "Day 1".
 		private List<Enemy> enemies;							//List of all Enemy units, used to issue them move commands.
@@ -85,6 +86,10 @@ using System.Collections;
 
 			//Set the text of levelText to the string "Day" and append the current level number.
 			levelText.text = "Day " + level;
+
+      moneyText = GameObject.Find("MoneyText").GetComponent<Text>();
+
+      moneyText.text = "Money: "+money+"$";
 
 			//Set levelImage to active blocking player's view of the game board during setup.
 			levelImage.SetActive(true);
@@ -164,6 +169,7 @@ using System.Collections;
     public void AddMoney(int collectedMoney)
     {
       money += collectedMoney;
+      moneyText.text = "Money: "+ money +"$";
       Debug.Log("Money ==> " + money);
     }
 
