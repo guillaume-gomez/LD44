@@ -214,13 +214,6 @@ using UnityEngine.SceneManagement;
 				//Disable the soda object the player collided with.
 				other.gameObject.SetActive (false);
 			}
-
-			else if(other.tag == "TriggerAction")
-			{
-				enabled = false;
-				animator.SetBool("interact", true);
-				Invoke("EndInteract", 2.0f);
-			}
 		}
 
 
@@ -230,6 +223,13 @@ using UnityEngine.SceneManagement;
 			//Load the last scene loaded, in this case Main, the only scene in the game. And we load it in "Single" mode so it replace the existing one
       //and not load all the scene object in the current scene.
       SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+		}
+
+		public void PutOutFire()
+		{
+			enabled = false;
+			animator.SetBool("interact", true);
+			Invoke("EndInteract", 2.0f);
 		}
 
 

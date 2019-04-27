@@ -20,5 +20,8 @@ public class Housing : MonoBehaviour
     public void Fire()
     {
       fireObject.SetActive(true);
+      Color color = fireObject.GetComponent<Renderer> ().material.color;
+      color.a = 1.0f;
+      GetComponent<Renderer> ().material.color = color;
     }
 }

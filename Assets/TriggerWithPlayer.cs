@@ -5,11 +5,11 @@ using UnityEngine;
 public class TriggerWithPlayer : MonoBehaviour
 {
     public GameObject fireObject;
-    private Color color;
+    private Color fireColor;
     // Start is called before the first frame update
     void Start()
     {
-      color = fireObject.GetComponent<Renderer> ().material.color;
+      fireColor = fireObject.GetComponent<Renderer> ().material.color;
     }
 
     // Update is called once per frame
@@ -20,9 +20,10 @@ public class TriggerWithPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-      if(other.gameObject.tag == "Player")
+      if(fireObject.activeSelf && fireColor.a == 1.0f && other.gameObject.tag == "Player")
       {
         StartCoroutine(FadeFireAlpha(1f,0f, fireObject));
+        other.gameObject.GetComponent<Player>().PutOutFire();
       }
     }
 
@@ -36,8 +37,8 @@ public class TriggerWithPlayer : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float currentAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / totalDuration);
-            color.a = currentAlpha;
-            fireObject.GetComponent<Renderer> ().material.color = color;
+            fireColor.a = currentAlpha;
+            fireObject.GetComponent<Renderer> ().material.color = fireColor;
             yield return null;
         }
     }
