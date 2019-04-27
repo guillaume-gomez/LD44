@@ -96,8 +96,10 @@ using System.Collections;
 
 			//Check if nothing was hit by linecast
 			if(hit.transform == null)
+			{
 				//If nothing was hit, return and don't execute further code.
 				return;
+			}
 
 			//Get a component reference to the component of type T attached to the object that was hit
 			T hitComponent = hit.transform.GetComponent <T> ();

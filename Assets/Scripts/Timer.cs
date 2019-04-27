@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour {
 
   public Text timerText;
   private float startTimer;
-  public float timerGameInMinutes = 2;
+  public float timerGameInMinutes = 0.1f;
   public bool started = false;
 
   // Use this for initialization
@@ -20,18 +20,15 @@ public class Timer : MonoBehaviour {
       float timerGameInMilliseconds = startTimer + (timerGameInMinutes * 60);
       float t = timerGameInMilliseconds - (Time.time - startTimer);
 
+      if(t < 0.0f) {
+        GameManager.instance.GameOver();
+      }
+
       string minutes = (((int) t) / 60).ToString();
       string seconds = (t % 60).ToString("f2");
 
       timerText.text = minutes + ": " + seconds;
     }
-  }
-
-  public bool HasTimeRemaining()
-  {
-    float timerGameInMilliseconds = startTimer + (timerGameInMinutes * 60);
-    float t = timerGameInMilliseconds - (Time.time - startTimer);
-    return t < 0.0f;
   }
 
   public void StopTimer() {

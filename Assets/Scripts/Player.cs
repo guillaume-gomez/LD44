@@ -134,9 +134,6 @@ using UnityEngine.SceneManagement;
 				SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
 			}
 
-			//Since the player has moved and lost food points, check if the game has ended.
-			CheckIfGameOver ();
-
 			//Set the playersTurn boolean of GameManager to false now that players turn is over.
 			GameManager.instance.playersTurn = false;
 		}
@@ -222,9 +219,6 @@ using UnityEngine.SceneManagement;
 
 			//Update the food display with the new total.
 			//foodText.text = "-"+ loss + " Food: " + food;
-
-			//Check to see if game has ended.
-			CheckIfGameOver ();
 		}
 
 
@@ -232,8 +226,6 @@ using UnityEngine.SceneManagement;
 		private void CheckIfGameOver ()
 		{
 			//Check if food point total is less than or equal to zero.
-			if (GameManager.instance.timerInGame.HasTimeRemaining())
-			{
 				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
 				SoundManager.instance.PlaySingle (gameOverSound);
 
@@ -242,7 +234,7 @@ using UnityEngine.SceneManagement;
 
 				//Call the GameOver function of GameManager.
 				GameManager.instance.GameOver ();
-			}
+
 		}
 
 		private void EndInteract()
