@@ -2,14 +2,12 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-namespace Completed
-{
 	using System.Collections.Generic;		//Allows us to use Lists.
 	using UnityEngine.UI;					//Allows us to use UI.
 
 	public class GameManager : MonoBehaviour
 	{
-		public float levelStartDelay = 2f;						//Time to wait before starting level, in seconds.
+		public float levelStartDelay = 0.2f;						//Time to wait before starting level, in seconds.
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
 		public int playerFoodPoints = 100;						//Starting value for Player food points.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
@@ -20,7 +18,8 @@ namespace Completed
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
 		private int level = 0;									//Current level number, expressed in game as "Day 1".
 		private List<Enemy> enemies;							//List of all Enemy units, used to issue them move commands.
-		private bool enemiesMoving;								//Boolean to check if enemies are moving.
+		private List<Housing> housings;
+    private bool enemiesMoving;								//Boolean to check if enemies are moving.
 		private bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
 
 		//Awake is always called before any Start functions
@@ -44,6 +43,7 @@ namespace Completed
 
 			//Assign enemies to a new List of Enemy objects.
 			enemies = new List<Enemy>();
+      housings = new List<Housing>();
 
 			//Get a component reference to the attached BoardManager script
 			boardScript = GetComponent<BoardManager>();
@@ -51,6 +51,7 @@ namespace Completed
 			//Call the InitGame function to initialize the first level (useful in standalone only !!)
       level = 1;
       InitGame();
+      // command this instead
 		}
 
         //this is called only once, and the paramter tell it to be called only after the scene was loaded
@@ -93,9 +94,11 @@ namespace Completed
 
 			//Clear any Enemy objects in our List to prepare for next level.
 			enemies.Clear();
+      housings.Clear();
 
 			//Call the SetupScene function of the BoardManager script, pass it current level number.
 			boardScript.SetupScene(level);
+      SpawnFire();
 
 		}
 
@@ -128,6 +131,12 @@ namespace Completed
 			enemies.Add(script);
 		}
 
+    public void AddHousingToList(Housing script)
+    {
+      Debug.Log("AddHousingToList");
+      housings.Add(script);
+    }
+
 
 		//GameOver is called when the player reaches 0 food points
 		public void GameOver()
@@ -141,6 +150,18 @@ namespace Completed
 			//Disable this GameManager.
 			enabled = false;
 		}
+
+    private void SpawnFire() {
+      float spawnMin = 3f;
+      float spawnMax = 2f;
+      //next call
+      if(housings.Count > 0)
+      {
+        Housing house = housings[Random.Range (0, housings.Count)];
+        house.Fire();
+      }
+      Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
+    }
 
 		//Coroutine to move enemies in sequence.
 		IEnumerator MoveEnemies()
@@ -174,5 +195,3 @@ namespace Completed
 			enemiesMoving = false;
 		}
 	}
-}
-

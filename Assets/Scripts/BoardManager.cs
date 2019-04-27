@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic; 		//Allows us to use Lists.
 using Random = UnityEngine.Random; 		//Tells Random to use the Unity Engine random number generator.
 
-namespace Completed
-{
 	public class BoardManager : MonoBehaviour
 	{
 		// Using Serializable allows us to embed a class with sub properties in the inspector.
@@ -146,10 +144,9 @@ namespace Completed
 			//LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
 
       //Instantiate a random number of housings based on minimum and maximum, at randomized positions.
-      //LayoutObjectAtRandom (housingsTiles, 2, 4);
+      LayoutObjectAtRandom (housingsTiles, 2, 4);
 
 			//Instantiate the exit tile in the upper right hand corner of our game board
 			Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
 		}
 	}
-}

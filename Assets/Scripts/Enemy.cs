@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Completed
-{
 	//Enemy inherits from MovingObject, our base class for objects that can move, Player also inherits from this.
 	public class Enemy : MovingObject
 	{
@@ -95,4 +93,3 @@ namespace Completed
 			SoundManager.instance.RandomizeSfx (attackSound1, attackSound2);
 		}
 	}
-}
