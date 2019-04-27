@@ -205,6 +205,7 @@ using UnityEngine.SceneManagement;
 			enabled = false;
 			animator.SetBool("interact", true);
 			Invoke("EndInteract", 2.0f);
+			GameManager.instance.AddMoney(10);
 		}
 
 

@@ -21,7 +21,7 @@ using System.Collections;
 		private List<Housing> housings;
     private bool enemiesMoving;								//Boolean to check if enemies are moving.
 		private bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
-
+    private int money = 0;
 		//Awake is always called before any Start functions
 		void Awake()
 		{
@@ -100,6 +100,8 @@ using System.Collections;
 			boardScript.SetupScene(level);
       SpawnFire();
 
+      money = 0;
+
 		}
 
 		//Hides black image used between levels
@@ -157,6 +159,12 @@ using System.Collections;
     public void Win()
     {
       timerInGame.StopTimer();
+    }
+
+    public void AddMoney(int collectedMoney)
+    {
+      money += collectedMoney;
+      Debug.Log("Money ==> " + money);
     }
 
     private void SpawnFire() {
