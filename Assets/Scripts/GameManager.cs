@@ -9,10 +9,10 @@ using System.Collections;
 	{
 		public float levelStartDelay = 0.2f;						//Time to wait before starting level, in seconds.
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
-		public int playerFoodPoints = 100;						//Starting value for Player food points.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
 		[HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
 
+		public Timer timerInGame;
 		private Text levelText;									//Text to display current level number.
 		private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
@@ -110,6 +110,10 @@ using System.Collections;
 
 			//Set doingSetup to false allowing player to move again.
 			doingSetup = false;
+
+      timerInGame = GameObject.Find("MyTimer").GetComponent<Timer>();
+      timerInGame.StartTimer();
+
 		}
 
 		//Update is called every frame.
@@ -150,6 +154,11 @@ using System.Collections;
 			//Disable this GameManager.
 			enabled = false;
 		}
+
+    public void Win()
+    {
+      timerInGame.StopTimer();
+    }
 
     private void SpawnFire() {
       float spawnMin = 3f;

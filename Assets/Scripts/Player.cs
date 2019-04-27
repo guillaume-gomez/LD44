@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.
 		public int pointsPerSoda = 20;				//Number of points to add to player food points when picking up a soda object.
 		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.
-		public Text foodText;						//UI Text to display current player food total.
 		public AudioClip moveSound1;				//1 of 2 Audio clips to play when player moves.
 		public AudioClip moveSound2;				//2 of 2 Audio clips to play when player moves.
 		public AudioClip eatSound1;					//1 of 2 Audio clips to play when player collects a food object.
@@ -32,12 +31,6 @@ using UnityEngine.SceneManagement;
 			//Get a component reference to the Player's animator component
 			animator = GetComponent<Animator>();
 
-			//Get the current food point total stored in GameManager.instance between levels.
-			food = GameManager.instance.playerFoodPoints;
-
-			//Set the foodText to reflect the current player food total.
-			foodText.text = "Food: " + food;
-
 			//Call the Start function of the MovingObject base class.
 			base.Start ();
 		}
@@ -47,7 +40,7 @@ using UnityEngine.SceneManagement;
 		private void OnDisable ()
 		{
 			//When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
-			GameManager.instance.playerFoodPoints = food;
+			//GameManager.instance.playerFoodPoints = food;
 		}
 
 
@@ -128,12 +121,6 @@ using UnityEngine.SceneManagement;
 		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
 		protected override void AttemptMove <T> (int xDir, int yDir)
 		{
-			//Every time player moves, subtract from food points total.
-			food--;
-
-			//Update food text display to reflect current score.
-			foodText.text = "Food: " + food;
-
 			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
 			base.AttemptMove <T> (xDir, yDir);
 
@@ -187,10 +174,6 @@ using UnityEngine.SceneManagement;
 			else if(other.tag == "Food")
 			{
 				//Add pointsPerFood to the players current food total.
-				food += pointsPerFood;
-
-				//Update foodText to represent current total and notify player that they gained points
-				foodText.text = "+" + pointsPerFood + " Food: " + food;
 
 				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
 				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
@@ -203,11 +186,6 @@ using UnityEngine.SceneManagement;
 			else if(other.tag == "Soda")
 			{
 				//Add pointsPerSoda to players food points total
-				food += pointsPerSoda;
-
-				//Update foodText to represent current total and notify player that they gained points
-				foodText.text = "+" + pointsPerSoda + " Food: " + food;
-
 				//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
 				SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
 
@@ -241,10 +219,9 @@ using UnityEngine.SceneManagement;
 			animator.SetTrigger ("playerHit");
 
 			//Subtract lost food points from the players total.
-			food -= loss;
 
 			//Update the food display with the new total.
-			foodText.text = "-"+ loss + " Food: " + food;
+			//foodText.text = "-"+ loss + " Food: " + food;
 
 			//Check to see if game has ended.
 			CheckIfGameOver ();
@@ -255,7 +232,7 @@ using UnityEngine.SceneManagement;
 		private void CheckIfGameOver ()
 		{
 			//Check if food point total is less than or equal to zero.
-			if (food <= 0)
+			if (GameManager.instance.timerInGame.HasTimeRemaining())
 			{
 				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
 				SoundManager.instance.PlaySingle (gameOverSound);
