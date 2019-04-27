@@ -137,7 +137,6 @@ using System.Collections;
 
     public void AddHousingToList(Housing script)
     {
-      Debug.Log("AddHousingToList");
       housings.Add(script);
     }
 
