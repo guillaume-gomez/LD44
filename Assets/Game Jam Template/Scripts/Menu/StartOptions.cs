@@ -52,8 +52,7 @@ public class StartOptions : MonoBehaviour {
 		if (menuSettingsData.nextSceneIndex != 0)
 		{
 			//Use invoke to delay calling of LoadDelayed by half the length of fadeColorAnimationClip
-		  //StartCoroutine(FadeCanvasGroupAlpha(1f, 0f, fadeOutImageCanvasGroup));
-      Invoke("LoadDelayed", 1);
+		  StartCoroutine(FadeCanvasGroupAlpha(0f, 1f, fadeOutImageCanvasGroup));
     }
 		//If changeScenes is false, call StartGameInScene
 		else
@@ -131,6 +130,10 @@ public class StartOptions : MonoBehaviour {
             yield return null;
         }
         HideDelayed();
+        PlayNewMusic();
+        canvasGroupToFadeAlpha.alpha = 0;
+        LoadDelayed();
+
         Debug.Log("Coroutine done. Game started in same scene! Put your game starting stuff here.");
     }
 
