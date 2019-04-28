@@ -50,7 +50,8 @@ public class Housing : MonoBehaviour
 
     private void AddMoney()
     {
-      Victim currentVictim = bubbleObject.transform.GetChild(0).GetComponent<Victim>();
+      //texts are inserted in the bubbleObjectHierarchy, so Victim is the third item
+      Victim currentVictim = bubbleObject.transform.GetChild(2).GetComponent<Victim>();
       GameManager.instance.AddMoney(currentVictim.price);
     }
 

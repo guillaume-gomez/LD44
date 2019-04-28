@@ -33,6 +33,10 @@ public class FireSpawner : MonoBehaviour
 
         GameObject bubble = house.GetBubble();
         GameObject toInstantiate = victimsTiles [Random.Range (0, victimsTiles.Length)];
+
+        TextMesh moneyText = bubble.transform.GetChild(0).GetComponent<TextMesh>();
+        moneyText.text = toInstantiate.GetComponent<Victim>().price + "$";
+
         //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
         GameObject instance =
           Instantiate (toInstantiate, new Vector3 (
