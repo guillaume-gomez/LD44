@@ -11,8 +11,6 @@ using UnityEngine.SceneManagement;
 		private const int LEFT  = 1;
 		private const int UP    = 2;
 		private const int DOWN  = 3;
-    private const int IDLE  = -1;
-
 
 		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.
 		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.
@@ -127,7 +125,7 @@ using UnityEngine.SceneManagement;
 				AttemptMove<Wall> (horizontal, vertical);
 			} else
       {
-        animator.SetInteger("playerDirection", IDLE);
+        animator.SetBool("isMoving", false);
       }
 		}
 
@@ -152,6 +150,7 @@ using UnityEngine.SceneManagement;
           int direction = yDir > 0 ? DOWN : UP;
           animator.SetInteger("playerDirection", direction);
         }
+        animator.SetBool("isMoving", true);
 				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
 				SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
 			}
