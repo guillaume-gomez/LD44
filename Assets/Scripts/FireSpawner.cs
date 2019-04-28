@@ -8,8 +8,8 @@ public class FireSpawner : MonoBehaviour
     public float spawnMin = 2.0f;
     public float spawnMax = 3.0f;
 
-    private const float offsetX = -0.7f;
-    private const float offsetY = 0.5f;
+    private const float offsetX = -1.0f;
+    private const float offsetY = 0.4f;
 
     public GameObject[] victimsTiles;
 
@@ -41,7 +41,7 @@ public class FireSpawner : MonoBehaviour
           Instantiate (toInstantiate, new Vector3 (
                                         bubble.transform.position.x + offsetX,
                                         bubble.transform.position.y + offsetY,
-                                        0f), Quaternion.identity
+                                        -1f), Quaternion.identity
                                       ) as GameObject;
 
         //Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
