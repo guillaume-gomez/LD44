@@ -24,4 +24,5 @@ public class Housing : MonoBehaviour
       color.a = 1.0f;
       GetComponent<Renderer> ().material.color = color;
     }
+
 }
