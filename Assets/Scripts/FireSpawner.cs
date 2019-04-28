@@ -8,9 +8,6 @@ public class FireSpawner : MonoBehaviour
     public float spawnMin = 2.0f;
     public float spawnMax = 3.0f;
 
-    private const float offsetX = -1.0f;
-    private const float offsetY = 0.4f;
-
     public GameObject[] victimsTiles;
 
     void Start()
@@ -39,8 +36,8 @@ public class FireSpawner : MonoBehaviour
         //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
         GameObject instance =
           Instantiate (toInstantiate, new Vector3 (
-                                        bubble.transform.position.x + offsetX,
-                                        bubble.transform.position.y + offsetY,
+                                        bubble.transform.position.x,
+                                        bubble.transform.position.y,
                                         -1f), Quaternion.identity
                                       ) as GameObject;
 
