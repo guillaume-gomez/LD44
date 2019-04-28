@@ -147,8 +147,9 @@ using UnityEngine.SceneManagement;
           int direction = xDir > 0 ? RIGHT : LEFT;
           animator.SetInteger("playerDirection", direction);
         } else {
-          int direction = yDir > 0 ? DOWN : UP;
+          int direction = yDir > 0 ? UP : DOWN;
           animator.SetInteger("playerDirection", direction);
+          Debug.Log(direction);
         }
         animator.SetBool("isMoving", true);
 				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
