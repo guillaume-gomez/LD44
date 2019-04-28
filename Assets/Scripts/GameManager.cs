@@ -12,7 +12,7 @@ using System.Collections;
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
     [HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
 
-		public Timer timerInGame;
+		private Timer timerInGame;
 		private Text levelText;									//Text to display current level number.
 		private Text moneyText;
     private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
@@ -157,7 +157,10 @@ using System.Collections;
 		public void GameOver()
 		{
 			//Set levelText to display number of levels passed and game over message
-			levelText.text = "You earn " + money;
+			levelText.text = "You earn " + money + "$";
+
+      timerInGame.StopTimer();
+      timerInGame.SetAsZeroText();
 
 			//Enable black background image gameObject.
 			levelImage.SetActive(true);

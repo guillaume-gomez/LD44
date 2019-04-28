@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour {
 
   public Text timerText;
   private float startTimer;
-  public float timerGameInMinutes = 0.1f;
+  public float timerGameInMinutes = 2.0f;
   public bool started = false;
 
   // Use this for initialization
@@ -34,6 +34,11 @@ public class Timer : MonoBehaviour {
   public void StopTimer() {
     timerText.color = Color.yellow;
     started = false;
+  }
+
+  public void SetAsZeroText()
+  {
+    timerText.text = "0: 00,00";
   }
 
   public void StartTimer() {
