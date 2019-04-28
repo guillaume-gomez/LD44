@@ -6,6 +6,14 @@ using UnityEngine.SceneManagement;
 	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
 	public class Player : MovingObject
 	{
+
+		private const int RIGHT = 0;
+		private const int LEFT  = 1;
+		private const int UP    = 2;
+		private const int DOWN  = 3;
+    private const int IDLE  = -1;
+
+
 		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.
 		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.
 		public int pointsPerSoda = 20;				//Number of points to add to player food points when picking up a soda object.
@@ -48,7 +56,6 @@ using UnityEngine.SceneManagement;
 		{
 			//If it's not the player's turn, exit the function.
 			if(!GameManager.instance.playersTurn) return;
-
 			int horizontal = 0;  	//Used to store the horizontal move direction.
 			int vertical = 0;		//Used to store the vertical move direction.
 
@@ -99,11 +106,15 @@ using UnityEngine.SceneManagement;
 
 					//Check if the difference along the x axis is greater than the difference along the y axis.
 					if (Mathf.Abs(x) > Mathf.Abs(y))
+					{
 						//If x is greater than zero, set horizontal to 1, otherwise set it to -1
 						horizontal = x > 0 ? 1 : -1;
+					}
 					else
+					{
 						//If y is greater than zero, set horizontal to 1, otherwise set it to -1
 						vertical = y > 0 ? 1 : -1;
+					}
 				}
 			}
 
@@ -114,7 +125,10 @@ using UnityEngine.SceneManagement;
 				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
-			}
+			} else
+      {
+        animator.SetInteger("playerDirection", IDLE);
+      }
 		}
 
 		//AttemptMove overrides the AttemptMove function in the base class MovingObject
@@ -130,6 +144,14 @@ using UnityEngine.SceneManagement;
 			//If Move returns true, meaning Player was able to move into an empty space.
 			if (Move (xDir, yDir, out hit))
 			{
+        if(xDir != 0)
+        {
+          int direction = xDir > 0 ? RIGHT : LEFT;
+          animator.SetInteger("playerDirection", direction);
+        } else {
+          int direction = yDir > 0 ? DOWN : UP;
+          animator.SetInteger("playerDirection", direction);
+        }
 				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
 				SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
 			}
@@ -203,7 +225,7 @@ using UnityEngine.SceneManagement;
 		public void PutOutFire()
 		{
 			enabled = false;
-			animator.SetBool("interact", true);
+			animator.SetTrigger("playerWork");
 			Invoke("EndInteract", 2.0f);
 		}
 
@@ -240,6 +262,5 @@ using UnityEngine.SceneManagement;
 		private void EndInteract()
 		{
 			enabled = true;
-			animator.SetBool("interact", false);
 		}
 	}

@@ -8,8 +8,8 @@ public class FireSpawner : MonoBehaviour
     public float spawnMin = 2.0f;
     public float spawnMax = 3.0f;
 
-    private const float offsetX = -0.7;
-    private const float offsetY = 0.5;
+    private const float offsetX = -0.7f;
+    private const float offsetY = 0.5f;
 
     public GameObject[] victimsTiles;
 
@@ -29,7 +29,7 @@ public class FireSpawner : MonoBehaviour
 
     private void SpawnFire() {
       Housing house = GameManager.instance.GetRandomHousing();
-      if(house != null)
+      if(house != null && !house.HasFire())
       {
         Debug.Log("Fire");
         house.Fire();
