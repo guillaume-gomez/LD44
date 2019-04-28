@@ -226,7 +226,6 @@ using UnityEngine.SceneManagement;
 			animator.SetBool("isMoving", true);
       animator.SetInteger("playerDirection", UP);
 
-
 			enabled = false;
       GameObject instance =
           Instantiate (waterPrefab, new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + 4.0f, 0f), Quaternion.identity) as GameObject;
