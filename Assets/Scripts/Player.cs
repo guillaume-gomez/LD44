@@ -23,7 +23,7 @@ using UnityEngine.SceneManagement;
 		public AudioClip drinkSound1;				//1 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip gameOverSound;				//Audio clip to play when player dies.
-
+    public GameObject waterPrefab;
 		private Animator animator;					//Used to store a reference to the Player's animator component.
 		private int food;                           //Used to store player food points total during level.
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -225,7 +225,10 @@ using UnityEngine.SceneManagement;
 		{
 			enabled = false;
 			animator.SetTrigger("playerWork");
-			Invoke("EndInteract", 2.0f);
+      GameObject instance =
+          Instantiate (waterPrefab, new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + 4.0f, 0f), Quaternion.identity) as GameObject;
+      instance.transform.SetParent (gameObject.transform);
+			Invoke("EndInteract", 1.0f);
 		}
 
 
