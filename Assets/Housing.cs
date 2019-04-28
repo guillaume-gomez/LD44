@@ -44,8 +44,13 @@ public class Housing : MonoBehaviour
     public void PutOutFire()
     {
       StartCoroutine(FadeFireAlpha(1f,0f, fireObject));
+      //assume that Coroutine is over after 1.5sec (see FadeFireAlpha)
+      Invoke("AddMoney", 1.5f);
+    }
+
+    private void AddMoney()
+    {
       Victim currentVictim = bubbleObject.transform.GetChild(0).GetComponent<Victim>();
-      Debug.Log(currentVictim.price);
       GameManager.instance.AddMoney(currentVictim.price);
     }
 
