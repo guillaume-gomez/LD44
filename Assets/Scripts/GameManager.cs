@@ -10,14 +10,15 @@ using System.Collections;
 		public float levelStartDelay = 0.2f;						//Time to wait before starting level, in seconds.
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
-		[HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
+    [HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
 
 		public Timer timerInGame;
 		private Text levelText;									//Text to display current level number.
 		private Text moneyText;
     private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
-		private int level = 0;									//Current level number, expressed in game as "Day 1".
+		private FireSpawner fireSpawnerScript;
+    private int level = 0;									//Current level number, expressed in game as "Day 1".
 		private List<Enemy> enemies;							//List of all Enemy units, used to issue them move commands.
 		private List<Housing> housings;
     private bool enemiesMoving;								//Boolean to check if enemies are moving.
@@ -48,6 +49,10 @@ using System.Collections;
 
 			//Get a component reference to the attached BoardManager script
 			boardScript = GetComponent<BoardManager>();
+
+      // Get a component reference to the attached FireSpawner script
+      fireSpawnerScript = GetComponent<FireSpawner>();
+
 
 			//Call the InitGame function to initialize the first level (useful in standalone only !!)
       level = 1;
@@ -103,7 +108,7 @@ using System.Collections;
 
 			//Call the SetupScene function of the BoardManager script, pass it current level number.
 			boardScript.SetupScene(level);
-      SpawnFire();
+      fireSpawnerScript.StartFires();
 
       money = 0;
 
@@ -173,16 +178,13 @@ using System.Collections;
       Debug.Log("Money ==> " + money);
     }
 
-    private void SpawnFire() {
-      float spawnMin = 3f;
-      float spawnMax = 2f;
-      //next call
-      if(housings.Count > 0)
+    public Housing GetRandomHousing()
+    {
+      if(housings.Count == 0)
       {
-        Housing house = housings[Random.Range (0, housings.Count)];
-        house.Fire();
+        return null;
       }
-      Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
+      return housings[Random.Range(0, housings.Count)];
     }
 
 		//Coroutine to move enemies in sequence.
