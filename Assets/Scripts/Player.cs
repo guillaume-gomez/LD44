@@ -223,8 +223,11 @@ using UnityEngine.SceneManagement;
 
 		public void PutOutFire()
 		{
+			animator.SetBool("isMoving", true);
+      animator.SetInteger("playerDirection", UP);
+
+
 			enabled = false;
-			animator.SetTrigger("playerWork");
       GameObject instance =
           Instantiate (waterPrefab, new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + 4.0f, 0f), Quaternion.identity) as GameObject;
       instance.transform.SetParent (gameObject.transform);
