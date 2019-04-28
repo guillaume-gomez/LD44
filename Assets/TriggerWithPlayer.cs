@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class TriggerWithPlayer : MonoBehaviour
 {
-    public GameObject fireObject;
-    private Color fireColor;
+    private Housing building;
     // Start is called before the first frame update
     void Start()
     {
-      fireColor = fireObject.GetComponent<Renderer> ().material.color;
+      building = transform.parent.gameObject.GetComponent<Housing>();
     }
 
     // Update is called once per frame
@@ -20,26 +19,10 @@ public class TriggerWithPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-      if(fireObject.activeSelf && fireColor.a == 1.0f && other.gameObject.tag == "Player")
+      if(building.HasFire() && other.gameObject.tag == "Player")
       {
-        StartCoroutine(FadeFireAlpha(1f,0f, fireObject));
+        building.PutOutFire();
         other.gameObject.GetComponent<Player>().PutOutFire();
       }
-    }
-
-    public IEnumerator FadeFireAlpha(float startAlpha, float endAlpha, GameObject fireObject)
-    {
-
-        float elapsedTime = 0f;
-        float totalDuration = 1.5f;
-
-        while (elapsedTime < totalDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float currentAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / totalDuration);
-            fireColor.a = currentAlpha;
-            fireObject.GetComponent<Renderer> ().material.color = fireColor;
-            yield return null;
-        }
     }
 }

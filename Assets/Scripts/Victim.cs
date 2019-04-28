@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Victim : MonoBehaviour
 {
-    public float price = 0;
+    public int price = 0;
     public int age = 0;
     public float distance = 0;
     public float empathy = 0;
