@@ -84,16 +84,24 @@ using Random = UnityEngine.Random; 		//Tells Random to use the Unity Engine rand
       }
 
       // add blocs
-			for(int x = 9; x < columns; x = x + 12)
+      // we had "fake blocks" to avoid black background on the screen
+      int offsetX = 9;
+      int offsetY = 6;
+			for(int x = -1; x < (columns/12) + 2; x++)
 			{
-				for(int y = 6; y < rows; y = y + 12)
+				for(int y = -1; y < (rows/12) + 2; y++)
 				{
 					//Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
 					GameObject toInstantiate = blocsTiles[Random.Range (0,blocsTiles.Length)];
 					//Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
 					GameObject instance =
-						Instantiate (toInstantiate, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
+						Instantiate (toInstantiate, new Vector3 (offsetX + (x * 12), offsetY + (y * 12), 0f), Quaternion.identity) as GameObject;
 
+					if(x != -1 && x < (columns/12) && y != -1 && y < (rows/12))
+          {
+          	Bloc bloc = instance.GetComponent<Bloc>();
+          	bloc.CreateBuildings();
+					}
 					//Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
 					instance.transform.SetParent (boardHolder);
 				}
