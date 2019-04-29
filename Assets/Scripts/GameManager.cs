@@ -170,7 +170,7 @@ using System.Collections;
       SoundManager.instance.PlaySingle(endGameAudio);
       float score = karma > 0.0f ? karma * money : 0.0f;
 			//Set levelText to display number of levels passed and game over message
-			levelText.text = "You Score\n score = karma * money = " + karma + " x " + money + "$ =" + score;
+			levelText.text = "You Score\n score = karma * money = " + karma + " x " + money + "$ =" + score + "\n\n\n Thanks for playing";
 
       timerInGame.StopTimer();
       timerInGame.SetAsZeroText();
