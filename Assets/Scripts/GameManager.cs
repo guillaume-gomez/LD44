@@ -7,12 +7,13 @@ using System.Collections;
 
 	public class GameManager : MonoBehaviour
 	{
-    public static float noSaveVictim = 0.5f;
+    public static float noSaveVictim = 1.0f;
     public static float letBuildingBurn = 0.0001f;
 		public float levelStartDelay = 0.2f;						//Time to wait before starting level, in seconds.
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
     [HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
+    public AudioClip endGameAudio;
 
 		private Timer timerInGame;
 		private Text levelText;									//Text to display current level number.
@@ -99,7 +100,7 @@ using System.Collections;
       moneyText.text = "Money: " + money + "$";
 
       karmaText = GameObject.Find("KarmaText").GetComponent<Text>();
-      karmaText.text = "Karma: " + karma + "X";
+      karmaText.text = "Karma: " + karma.ToString("f2") + "%";
 
 			//Set levelImage to active blocking player's view of the game board during setup.
 			levelImage.SetActive(true);
@@ -116,7 +117,7 @@ using System.Collections;
       fireSpawnerScript.StartFires();
 
       money = 0;
-      karma = 1.0f;
+      karma = 1.00f;
 		}
 
 		//Hides black image used between levels
@@ -162,8 +163,10 @@ using System.Collections;
 		//GameOver is called when the player reaches 0 food points
 		public void GameOver()
 		{
+      SoundManager.instance.PlaySingle(endGameAudio);
+      float score = karma > 0.0f ? karma * money : 0.0f;
 			//Set levelText to display number of levels passed and game over message
-			levelText.text = "You earn " + money + "$";
+			levelText.text = "You Score\n score = karma * money = " + karma + " x " + money + "$ =" + score;
 
       timerInGame.StopTimer();
       timerInGame.SetAsZeroText();
@@ -193,7 +196,7 @@ using System.Collections;
     public void EditKarma(float amountKarma)
     {
       karma += amountKarma;
-      karmaText.text = "Karma " + karma.ToString("f2") + "X";
+      karmaText.text = "Karma :" + karma.ToString("f2") + "%";
     }
 
     public Housing GetRandomHousing()

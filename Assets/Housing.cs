@@ -12,6 +12,7 @@ public class Housing : MonoBehaviour
 
     public AudioClip fireStartAudio;
     public AudioClip fireEndAudio;
+    //public AudioClip VictimDiedAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -95,6 +96,8 @@ public class Housing : MonoBehaviour
       Color fireColorBase = new Color(1.0f, 1.0f, 1.0f, 0.0f);
       fireColor = fireColorBase;
       fireObject.GetComponent<Renderer> ().material.color = fireColorBase;
+
+      //SoundManager.instance.PlaySingle(VictimDiedAudio);
     }
 
     private IEnumerator FadeFireAlpha(float startAlpha, float endAlpha, GameObject fireObject)
