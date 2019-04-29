@@ -58,28 +58,33 @@ using System.Collections;
       // Get a component reference to the attached FireSpawner script
       fireSpawnerScript = GetComponent<FireSpawner>();
 
-
-			//Call the InitGame function to initialize the first level (useful in standalone only !!)
-      //level = 1;
-      //InitGame();
-      // command this instead
+      GameObject MenuUI = GameObject.Find("Menu UI");
+      if(MenuUI)
+      {
+        MenuUI.SetActive(false);
+      }
+      level = 1;
+      InitGame();
 		}
 
-        //this is called only once, and the parameter tell it to be called only after the scene was loaded
-        //(otherwise, our Scene Load callback would be called the very first load, and we don't want that)
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        static public void CallbackInitialization()
-        {
-            //register the callback to be called everytime the scene is loaded
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
+    //this is called only once, and the parameter tell it to be called only after the scene was loaded
+    //(otherwise, our Scene Load callback would be called the very first load, and we don't want that)
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    static public void CallbackInitialization()
+    {
+        //register the callback to be called everytime the scene is loaded
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        //This is called each time a scene is loaded.
-        static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-        {
-            instance.level++;
-            instance.InitGame();
-        }
+    //This is called each time a scene is loaded.
+    static private void OnSceneLoaded(Scene scene, LoadSceneMode arg1)
+    {
+      if(scene.buildIndex == 3)
+      {
+        instance.level++;
+        instance.InitGame();
+      }
+    }
 
 
 		//Initializes the game for each level.
