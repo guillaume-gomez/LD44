@@ -12,6 +12,7 @@ public class Housing : MonoBehaviour
 
     public AudioClip fireStartAudio;
     public AudioClip fireEndAudio;
+    //public AudioClip VictimDiedAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,11 +34,10 @@ public class Housing : MonoBehaviour
         timerText.text = victim.GetCurrentTimerString();
         if(victim.GetCurrentTimer() < 0.0f)
         {
-           DestroyVictimAndHud();
-           bubbleObject.SetActive(false);
+          DestroyVictimAndHud();
+          bubbleObject.SetActive(false);
         }
       }
-
     }
 
     public GameObject GetBubble()
@@ -69,10 +69,10 @@ public class Housing : MonoBehaviour
     {
       StartCoroutine(FadeFireAlpha(1f,0f, fireObject));
       //assume that Coroutine is over after 1.5sec (see FadeFireAlpha)
-      Invoke("AddMoney", 1.5f);
+      Invoke("UpdateScore", 1.5f);
     }
 
-    private void AddMoney()
+    private void UpdateScore()
     {
       //texts are inserted in the bubbleObjectHierarchy, so Victim is the third item
       if(bubbleObject.transform.childCount > 2)
@@ -81,6 +81,7 @@ public class Housing : MonoBehaviour
         if(currentVictim)
         {
           GameManager.instance.AddMoney(currentVictim.price);
+          GameManager.instance.EditKarma(currentVictim.karma);
         }
       }
     }
@@ -89,6 +90,14 @@ public class Housing : MonoBehaviour
     {
       //destroy the Victim
       Destroy(bubbleObject.transform.GetChild(2).gameObject);
+      GameManager.instance.EditKarma(-GameManager.noSaveVictim);
+
+      fireObject.SetActive(false);
+      Color fireColorBase = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+      fireColor = fireColorBase;
+      fireObject.GetComponent<Renderer> ().material.color = fireColorBase;
+
+      //SoundManager.instance.PlaySingle(VictimDiedAudio);
     }
 
     private IEnumerator FadeFireAlpha(float startAlpha, float endAlpha, GameObject fireObject)

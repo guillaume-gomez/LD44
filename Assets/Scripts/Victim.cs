@@ -7,7 +7,7 @@ public class Victim : MonoBehaviour
     public int price = 0;
     public int age = 0;
     public float distance = 0;
-    public float karam = 0;
+    public float karma = 0;
     public float duration = 0;
     public AudioClip helpAudio;
 
