@@ -36,6 +36,9 @@ public class Housing : MonoBehaviour
            DestroyVictimAndHud();
            bubbleObject.SetActive(false);
         }
+      } else if(HasFire())
+      {
+        GameManager.instance.EditKarma(-GameManager.letBuildingBurn);
       }
 
     }
@@ -69,10 +72,10 @@ public class Housing : MonoBehaviour
     {
       StartCoroutine(FadeFireAlpha(1f,0f, fireObject));
       //assume that Coroutine is over after 1.5sec (see FadeFireAlpha)
-      Invoke("AddMoney", 1.5f);
+      Invoke("UpdateScore", 1.5f);
     }
 
-    private void AddMoney()
+    private void UpdateScore()
     {
       //texts are inserted in the bubbleObjectHierarchy, so Victim is the third item
       if(bubbleObject.transform.childCount > 2)
@@ -81,6 +84,7 @@ public class Housing : MonoBehaviour
         if(currentVictim)
         {
           GameManager.instance.AddMoney(currentVictim.price);
+          GameManager.instance.EditKarma(currentVictim.karma);
         }
       }
     }
@@ -89,6 +93,7 @@ public class Housing : MonoBehaviour
     {
       //destroy the Victim
       Destroy(bubbleObject.transform.GetChild(2).gameObject);
+      GameManager.instance.EditKarma(-GameManager.noSaveVictim);
     }
 
     private IEnumerator FadeFireAlpha(float startAlpha, float endAlpha, GameObject fireObject)

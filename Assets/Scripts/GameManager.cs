@@ -7,6 +7,8 @@ using System.Collections;
 
 	public class GameManager : MonoBehaviour
 	{
+    public static float noSaveVictim = 0.5f;
+    public static float letBuildingBurn = 0.0001f;
 		public float levelStartDelay = 0.2f;						//Time to wait before starting level, in seconds.
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
@@ -15,6 +17,7 @@ using System.Collections;
 		private Timer timerInGame;
 		private Text levelText;									//Text to display current level number.
 		private Text moneyText;
+    private Text karmaText;
     private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
 		private FireSpawner fireSpawnerScript;
@@ -24,6 +27,7 @@ using System.Collections;
     private bool enemiesMoving;								//Boolean to check if enemies are moving.
 		private bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
     private int money = 0;
+    private float karma = 1.0f;
 		//Awake is always called before any Start functions
 		void Awake()
 		{
@@ -88,13 +92,14 @@ using System.Collections;
 
 			//Get a reference to our text LevelText's text component by finding it by name and calling GetComponent.
 			levelText = GameObject.Find("LevelText").GetComponent<Text>();
-
 			//Set the text of levelText to the string "Day" and append the current level number.
 			levelText.text = "Get Ready !!";
 
       moneyText = GameObject.Find("MoneyText").GetComponent<Text>();
+      moneyText.text = "Money: " + money + "$";
 
-      moneyText.text = "Money: "+money+"$";
+      karmaText = GameObject.Find("KarmaText").GetComponent<Text>();
+      karmaText.text = "Karma: " + karma + "X";
 
 			//Set levelImage to active blocking player's view of the game board during setup.
 			levelImage.SetActive(true);
@@ -111,6 +116,7 @@ using System.Collections;
       fireSpawnerScript.StartFires();
 
       money = 0;
+      karma = 1.0f;
 		}
 
 		//Hides black image used between levels
@@ -182,6 +188,12 @@ using System.Collections;
     {
       money += collectedMoney;
       moneyText.text = "Money: "+ money +"$";
+    }
+
+    public void EditKarma(float amountKarma)
+    {
+      karma += amountKarma;
+      karmaText.text = "Karma " + karma.ToString("f2") + "X";
     }
 
     public Housing GetRandomHousing()
