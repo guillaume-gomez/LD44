@@ -60,8 +60,8 @@ using System.Collections;
 
 
 			//Call the InitGame function to initialize the first level (useful in standalone only !!)
-      level = 1;
-      InitGame();
+      //level = 1;
+      //InitGame();
       // command this instead
 		}
 
