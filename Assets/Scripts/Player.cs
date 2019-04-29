@@ -48,8 +48,6 @@ using UnityEngine.SceneManagement;
 
 		private void Update ()
 		{
-			//If it's not the player's turn, exit the function.
-			if(!GameManager.instance.playersTurn) return;
 			int horizontal = 0;  	//Used to store the horizontal move direction.
 			int vertical = 0;		//Used to store the vertical move direction.
 
@@ -70,9 +68,15 @@ using UnityEngine.SceneManagement;
 
       if(Input.GetButtonDown("Jump"))
       {
+      	Debug.Log("JUMP pressed");
         PutOutFire();
         return;
       }
+
+      //If it's not the player's turn, exit the function.
+			if(!GameManager.instance.playersTurn) return;
+
+
 			//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 #elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
 
@@ -84,6 +88,10 @@ using UnityEngine.SceneManagement;
           PutOutFire();
           return;
         }
+
+        //If it's not the player's turn, exit the function.
+				if(!GameManager.instance.playersTurn) return;
+
 				//Store the first touch detected.
 				Touch myTouch = Input.touches[0];
 
@@ -207,6 +215,7 @@ using UnityEngine.SceneManagement;
 
 		public void PutOutFire()
 		{
+			Debug.Log("PutOutFire");
 			animator.SetBool("isMoving", true);
       animator.SetInteger("playerDirection", UP);
 

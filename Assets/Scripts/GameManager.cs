@@ -178,7 +178,7 @@ using System.Collections;
     {
       money += collectedMoney;
       moneyText.text = "Money: "+ money +"$";
-      Debug.Log("Money ==> " + money);
+//      Debug.Log("Money ==> " + money);
     }
 
     public Housing GetRandomHousing()

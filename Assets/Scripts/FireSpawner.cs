@@ -5,8 +5,8 @@ using UnityEngine;
 public class FireSpawner : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float spawnMin = 2.0f;
-    public float spawnMax = 3.0f;
+    public float spawnMin = 5.0f;
+    public float spawnMax = 10.0f;
 
     public GameObject[] victimsTiles;
 
@@ -32,7 +32,12 @@ public class FireSpawner : MonoBehaviour
 
         GameObject bubble = house.GetBubble();
         GameObject toInstantiate = victimsTiles [Random.Range (0, victimsTiles.Length)];
-
+        if(bubble.transform.childCount > 2) {
+          //has already player
+          Debug.Log("on est al");
+          Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
+          return;
+        }
         //warning, bubble is sometimes null find out why
         TextMesh moneyText = bubble.transform.GetChild(0).GetComponent<TextMesh>();
         moneyText.text = toInstantiate.GetComponent<Victim>().price + "$";
@@ -48,6 +53,12 @@ public class FireSpawner : MonoBehaviour
         //Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
         instance.transform.SetParent (bubble.gameObject.transform);
       }
+
+      // TODO
+      //int enemyCount = (int)Mathf.Log(level, 2f);
+      //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
+      //LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
+
       //next call
       Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
     }

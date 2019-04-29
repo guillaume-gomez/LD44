@@ -27,17 +27,14 @@ public class Housing : MonoBehaviour
     void Update()
     {
       // we assume that victim is the third items
-      if(bubbleObject.transform.childCount > 2)
+      Victim victim = GetVictim();
+      if(victim)
       {
-        Victim victim = bubbleObject.transform.GetChild(2).GetComponent<Victim>();
-        if(victim)
+        timerText.text = victim.GetCurrentTimerString();
+        if(victim.GetCurrentTimer() < 0.0f)
         {
-          timerText.text = victim.GetCurrentTimerString();
-          if(victim.GetCurrentTimer() < 0.0f)
-          {
-             DestroyVictimAndHud();
-             bubbleObject.SetActive(false);
-          }
+           DestroyVictimAndHud();
+           bubbleObject.SetActive(false);
         }
       }
 
@@ -48,9 +45,17 @@ public class Housing : MonoBehaviour
       return bubbleObject;
     }
 
+    public Victim GetVictim()
+    {
+      if(bubbleObject.transform.childCount <= 2) {
+        return null;
+      }
+      return bubbleObject.transform.GetChild(2).GetComponent<Victim>();
+    }
+
     public bool HasFire()
     {
-      return fireObject.activeSelf && fireColor.a == 1.0f;
+      return fireObject.activeSelf && fireColor.a > 0.0f;
     }
 
     public void Fire()
@@ -58,10 +63,6 @@ public class Housing : MonoBehaviour
       fireObject.SetActive(true);
       bubbleObject.SetActive(true);
       SoundManager.instance.PlayOnLoop(fireStartAudio);
-
-      Color color = fireObject.GetComponent<Renderer> ().material.color;
-      color.a = 1.0f;
-      GetComponent<Renderer> ().material.color = color;
     }
 
     public void PutOutFire()
@@ -86,10 +87,8 @@ public class Housing : MonoBehaviour
 
     private void DestroyVictimAndHud()
     {
-      foreach (Transform child in bubbleObject.transform)
-      {
-        Destroy(child.gameObject);
-      }
+      //destroy the Victim
+      Destroy(bubbleObject.transform.GetChild(2).gameObject);
     }
 
     private IEnumerator FadeFireAlpha(float startAlpha, float endAlpha, GameObject fireObject)
@@ -108,5 +107,10 @@ public class Housing : MonoBehaviour
       }
       SoundManager.instance.PlaySingle(fireEndAudio);
       bubbleObject.SetActive(false);
+      fireObject.SetActive(false);
+
+      Color fireColorBase = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+      fireColor = fireColorBase;
+      fireObject.GetComponent<Renderer> ().material.color = fireColorBase;
     }
 }
