@@ -63,12 +63,8 @@ using System.Collections;
       {
         MenuUI.SetActive(false);
       }
-
-
-			//Call the InitGame function to initialize the first level (useful in standalone only !!)
-      //level = 1;
+      level = 1;
       InitGame();
-      // command this instead
 		}
 
         //this is called only once, and the parameter tell it to be called only after the scene was loaded
