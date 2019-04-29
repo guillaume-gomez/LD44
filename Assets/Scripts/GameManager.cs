@@ -63,8 +63,10 @@ using System.Collections;
       {
         MenuUI.SetActive(false);
       }
-      level = 1;
-      InitGame();
+      //uncomment this on standalone
+      //level = 1;
+      //InitGame();
+      /////
 		}
 
     //this is called only once, and the parameter tell it to be called only after the scene was loaded
@@ -79,19 +81,23 @@ using System.Collections;
     //This is called each time a scene is loaded.
     static private void OnSceneLoaded(Scene scene, LoadSceneMode arg1)
     {
-      if(scene.buildIndex == 3)
-      {
-        instance.level++;
-        instance.InitGame();
-      }
+        // the game scene
+        if(scene.buildIndex == 3)
+        {
+          instance.level++;
+          instance.InitGame();
+        }
     }
 
 
 		//Initializes the game for each level.
 		void InitGame()
 		{
+      Debug.Log("InitGame");
 			//While doingSetup is true the player can't move, prevent player from moving while title card is up.
 			doingSetup = true;
+      money = 0;
+      karma = 1.00f;
 
 			//Get a reference to our image LevelImage by finding it by name.
 			levelImage = GameObject.Find("LevelImage");
@@ -120,20 +126,19 @@ using System.Collections;
 			//Call the SetupScene function of the BoardManager script, pass it current level number.
 			boardScript.SetupScene(level);
       fireSpawnerScript.StartFires();
-
-      money = 0;
-      karma = 1.00f;
 		}
 
 		//Hides black image used between levels
 		void HideLevelImage()
 		{
-
+      gameObject.SetActive(true);
 			//Disable the levelImage gameObject.
 			levelImage.SetActive(false);
 
 			//Set doingSetup to false allowing player to move again.
 			doingSetup = false;
+      playersTurn = true;
+      enemiesMoving = false;
 
       timerInGame = GameObject.Find("MyTimer").GetComponent<Timer>();
       timerInGame.StartTimer();
@@ -171,7 +176,7 @@ using System.Collections;
       SoundManager.instance.PlaySingle(endGameAudio);
       float score = karma > 0.0f ? karma * money : 0.0f;
 			//Set levelText to display number of levels passed and game over message
-			levelText.text = "You Score\n score = karma * money = " + karma + " x " + money + "$ =" + score;
+			levelText.text = "You Score\n score = karma * money = " + karma + " x " + money + "$ =" + score + "\n\n\n Thanks for playing \n\n\nYou can quit or leave the game restart.";
 
       timerInGame.StopTimer();
       timerInGame.SetAsZeroText();
@@ -181,10 +186,8 @@ using System.Collections;
 
 			//Disable this GameManager.
 			gameObject.SetActive(false);
-      //old version to disable gameobject I think
-      //enabled = false;
 
-      //Invoke("Restart", 3f);
+      Invoke("Restart", 10f);
 		}
 
     private void Restart()
