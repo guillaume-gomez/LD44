@@ -32,15 +32,17 @@ public class FireSpawner : MonoBehaviour
 
         GameObject bubble = house.GetBubble();
         GameObject toInstantiate = victimsTiles [Random.Range (0, victimsTiles.Length)];
-        if(bubble.transform.childCount > 2) {
+        if(bubble.transform.childCount > 3) {
           //has already player
-          Debug.Log("on est al");
           Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
           return;
         }
         //warning, bubble is sometimes null find out why
         TextMesh moneyText = bubble.transform.GetChild(0).GetComponent<TextMesh>();
         moneyText.text = toInstantiate.GetComponent<Victim>().price + "$";
+
+        TextMesh karmaText = bubble.transform.GetChild(1).GetComponent<TextMesh>();
+        karmaText.text = toInstantiate.GetComponent<Victim>().karma + "%";
 
         //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
         GameObject instance =

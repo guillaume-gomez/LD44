@@ -19,7 +19,7 @@ public class Housing : MonoBehaviour
       fireObject.SetActive(false);
       fireColor = fireObject.GetComponent<Renderer> ().material.color;
       bubbleObject.SetActive(false);
-      timerText = bubbleObject.transform.GetChild(1).GetComponent<TextMesh>();
+      timerText = bubbleObject.transform.GetChild(2).GetComponent<TextMesh>();
 
       GameManager.instance.AddHousingToList(this);
     }
@@ -47,10 +47,10 @@ public class Housing : MonoBehaviour
 
     public Victim GetVictim()
     {
-      if(bubbleObject.transform.childCount <= 2) {
+      if(bubbleObject.transform.childCount <= 3) {
         return null;
       }
-      return bubbleObject.transform.GetChild(2).GetComponent<Victim>();
+      return bubbleObject.transform.GetChild(3).GetComponent<Victim>();
     }
 
     public bool HasFire()
@@ -74,22 +74,22 @@ public class Housing : MonoBehaviour
 
     private void UpdateScore()
     {
-      //texts are inserted in the bubbleObjectHierarchy, so Victim is the third item
-      if(bubbleObject.transform.childCount > 2)
+      Victim currentVictim = GetVictim();
+      if(currentVictim)
       {
-        Victim currentVictim = bubbleObject.transform.GetChild(2).GetComponent<Victim>();
-        if(currentVictim)
-        {
-          GameManager.instance.AddMoney(currentVictim.price);
-          GameManager.instance.EditKarma(currentVictim.karma);
-        }
+        GameManager.instance.AddMoney(currentVictim.price);
+        GameManager.instance.EditKarma(currentVictim.karma);
       }
     }
 
     private void DestroyVictimAndHud()
     {
       //destroy the Victim
-      Destroy(bubbleObject.transform.GetChild(2).gameObject);
+      Victim victim = GetVictim();
+      if(victim)
+      {
+        Destroy(victim.gameObject);
+      }
       GameManager.instance.EditKarma(-GameManager.noSaveVictim);
 
       fireObject.SetActive(false);
