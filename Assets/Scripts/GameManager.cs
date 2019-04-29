@@ -7,7 +7,7 @@ using System.Collections;
 
 	public class GameManager : MonoBehaviour
 	{
-    public static float noSaveVictim = 1.0f;
+    public static float noSaveVictim = 0.5f;
     public static float letBuildingBurn = 0.0001f;
 		public float levelStartDelay = 0.2f;						//Time to wait before starting level, in seconds.
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
