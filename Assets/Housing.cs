@@ -9,6 +9,9 @@ public class Housing : MonoBehaviour
 
     private Color fireColor;
     private TextMesh timerText;
+
+    public AudioClip fireStartAudio;
+    public AudioClip fireEndAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +57,8 @@ public class Housing : MonoBehaviour
     {
       fireObject.SetActive(true);
       bubbleObject.SetActive(true);
+      SoundManager.instance.PlayOnLoop(fireStartAudio);
+
       Color color = fireObject.GetComponent<Renderer> ().material.color;
       color.a = 1.0f;
       GetComponent<Renderer> ().material.color = color;
@@ -69,10 +74,13 @@ public class Housing : MonoBehaviour
     private void AddMoney()
     {
       //texts are inserted in the bubbleObjectHierarchy, so Victim is the third item
-      Victim currentVictim = bubbleObject.transform.GetChild(2).GetComponent<Victim>();
-      if(currentVictim)
+      if(bubbleObject.transform.childCount > 2)
       {
-        GameManager.instance.AddMoney(currentVictim.price);
+        Victim currentVictim = bubbleObject.transform.GetChild(2).GetComponent<Victim>();
+        if(currentVictim)
+        {
+          GameManager.instance.AddMoney(currentVictim.price);
+        }
       }
     }
 
@@ -98,6 +106,7 @@ public class Housing : MonoBehaviour
           fireObject.GetComponent<Renderer> ().material.color = fireColor;
           yield return null;
       }
+      SoundManager.instance.PlaySingle(fireEndAudio);
       bubbleObject.SetActive(false);
     }
 }

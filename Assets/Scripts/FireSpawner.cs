@@ -33,6 +33,7 @@ public class FireSpawner : MonoBehaviour
         GameObject bubble = house.GetBubble();
         GameObject toInstantiate = victimsTiles [Random.Range (0, victimsTiles.Length)];
 
+        //warning, bubble is sometimes null find out why
         TextMesh moneyText = bubble.transform.GetChild(0).GetComponent<TextMesh>();
         moneyText.text = toInstantiate.GetComponent<Victim>().price + "$";
 
