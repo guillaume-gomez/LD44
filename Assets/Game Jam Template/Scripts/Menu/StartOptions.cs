@@ -79,6 +79,7 @@ public class StartOptions : MonoBehaviour {
 		//if changeMusicOnStart is true, call the PlayLevelMusic function of playMusic
 		if (menuSettingsData.musicLoopToChangeTo != null)
 		{
+      Debug.Log("SceneWasLoaded");
 			playMusic.PlayLevelMusic ();
 		}
 	}
@@ -137,7 +138,7 @@ public class StartOptions : MonoBehaviour {
             yield return null;
         }
         HideDelayed();
-        PlayNewMusic();
+        //PlayNewMusic();
         LoadDelayed();
         Debug.Log("Coroutine done. Game started in same scene! Put your game starting stuff here.");
     }
@@ -145,8 +146,7 @@ public class StartOptions : MonoBehaviour {
 
     public void PlayNewMusic()
 	{
-    Debug.Log("PlayNewMusic");
-		//Fade up music nearly instantly without a click 
+		//Fade up music nearly instantly without a click
 		playMusic.FadeUp (fastFadeIn);
 		//Play second music clip from MenuSettings
 		playMusic.PlaySelectedMusic (menuSettingsData.musicLoopToChangeTo);
