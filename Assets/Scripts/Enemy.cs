@@ -81,7 +81,7 @@ using System.Collections;
 		protected override void OnCantMove <T> (T component)
 		{
 			//Declare hitPlayer and set it to equal the encountered component.
-			Player hitPlayer = component as Player;
+			/*Player hitPlayer = component as Player;
 
 			//Call the LoseFood function of hitPlayer passing it playerDamage, the amount of foodpoints to be subtracted.
 			hitPlayer.LoseFood (playerDamage);
@@ -90,6 +90,6 @@ using System.Collections;
 			animator.SetTrigger ("enemyAttack");
 
 			//Call the RandomizeSfx function of SoundManager passing in the two audio clips to choose randomly between.
-			SoundManager.instance.RandomizeSfx (attackSound1, attackSound2);
+			SoundManager.instance.RandomizeSfx (attackSound1, attackSound2);*/
 		}
 	}

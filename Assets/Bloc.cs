@@ -9,8 +9,6 @@ public class Bloc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlaceHousing(-4, 1);
-        PlaceHousing(0 , 1);
     }
 
     // Update is called once per frame
@@ -28,5 +26,11 @@ public class Bloc : MonoBehaviour
 
       //Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
       instance.transform.SetParent (gameObject.transform);
+    }
+
+    public void CreateBuildings()
+    {
+      PlaceHousing(-4, 1);
+      PlaceHousing(0 , 1);
     }
 }

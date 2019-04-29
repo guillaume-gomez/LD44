@@ -111,12 +111,12 @@ using System.Collections;
       fireSpawnerScript.StartFires();
 
       money = 0;
-
 		}
 
 		//Hides black image used between levels
 		void HideLevelImage()
 		{
+
 			//Disable the levelImage gameObject.
 			levelImage.SetActive(false);
 
@@ -125,7 +125,6 @@ using System.Collections;
 
       timerInGame = GameObject.Find("MyTimer").GetComponent<Timer>();
       timerInGame.StartTimer();
-
 		}
 
 		//Update is called every frame.
@@ -133,9 +132,10 @@ using System.Collections;
 		{
 			//Check that playersTurn or enemiesMoving or doingSetup are not currently true.
 			if(playersTurn || enemiesMoving || doingSetup)
-
-				//If any of these are true, return and do not start MoveEnemies.
+			{
+        //If any of these are true, return and do not start MoveEnemies.
 				return;
+      }
 
 			//Start moving enemies.
 			StartCoroutine (MoveEnemies ());
@@ -166,19 +166,22 @@ using System.Collections;
 			levelImage.SetActive(true);
 
 			//Disable this GameManager.
-			enabled = false;
+			gameObject.SetActive(false);
+      //old version to disable gameobject I think
+      //enabled = false;
+
+      //Invoke("Restart", 3f);
 		}
 
-    public void Win()
+    private void Restart()
     {
-      timerInGame.StopTimer();
+      SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 
     public void AddMoney(int collectedMoney)
     {
       money += collectedMoney;
       moneyText.text = "Money: "+ money +"$";
-      Debug.Log("Money ==> " + money);
     }
 
     public Housing GetRandomHousing()

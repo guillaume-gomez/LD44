@@ -80,7 +80,7 @@ public class StartOptions : MonoBehaviour {
 		if (menuSettingsData.musicLoopToChangeTo != null)
 		{
 			playMusic.PlayLevelMusic ();
-		}	
+		}
 	}
 
 
@@ -94,7 +94,14 @@ public class StartOptions : MonoBehaviour {
 
 		//Load the selected scene, by scene index number in build settings
 		SceneManager.LoadScene (sceneToStart);
+
+    Invoke("HideCanvasGroup", menuSettingsData.menuFadeTime);
 	}
+
+  private void HideCanvasGroup()
+  {
+    fadeOutImageCanvasGroup.alpha = 0.0f;
+  }
 
 	public void HideDelayed()
 	{
@@ -131,9 +138,7 @@ public class StartOptions : MonoBehaviour {
         }
         HideDelayed();
         PlayNewMusic();
-        canvasGroupToFadeAlpha.alpha = 0;
         LoadDelayed();
-
         Debug.Log("Coroutine done. Game started in same scene! Put your game starting stuff here.");
     }
 
