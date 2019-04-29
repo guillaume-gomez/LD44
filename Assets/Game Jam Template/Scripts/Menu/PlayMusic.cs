@@ -37,7 +37,7 @@ public class PlayMusic : MonoBehaviour {
 				break;
 			//If scene index is 1 (usually main scene) assign the clip mainMusic to musicSource
 			case 1:
-                Debug.Log("Scene index is 1, setting music to " + menuSettings.musicLoopToChangeTo);
+				Debug.Log("Scene index is 1, setting music to " + menuSettings.musicLoopToChangeTo);
 				musicSource.clip = menuSettings.musicLoopToChangeTo;
 				break;
 

@@ -58,6 +58,9 @@ using System.Collections;
       // Get a component reference to the attached FireSpawner script
       fireSpawnerScript = GetComponent<FireSpawner>();
 
+      GameObject MenuUI = GameObject.Find("Menu UI");
+      MenuUI.SetActive(false);
+
 
 			//Call the InitGame function to initialize the first level (useful in standalone only !!)
       //level = 1;

@@ -145,6 +145,7 @@ public class StartOptions : MonoBehaviour {
 
     public void PlayNewMusic()
 	{
+    Debug.Log("PlayNewMusic");
 		//Fade up music nearly instantly without a click 
 		playMusic.FadeUp (fastFadeIn);
 		//Play second music clip from MenuSettings
