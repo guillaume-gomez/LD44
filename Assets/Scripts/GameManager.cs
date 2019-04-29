@@ -60,8 +60,8 @@ using System.Collections;
 
 
 			//Call the InitGame function to initialize the first level (useful in standalone only !!)
-      level = 1;
-      InitGame();
+      //level = 1;
+      //InitGame();
       // command this instead
 		}
 
@@ -75,10 +75,13 @@ using System.Collections;
         }
 
         //This is called each time a scene is loaded.
-        static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        static private void OnSceneLoaded(Scene scene, LoadSceneMode arg1)
         {
-            instance.level++;
-            instance.InitGame();
+            if(scene.buildIndex == 2)
+            {
+              instance.level++;
+              instance.InitGame();
+            }
         }
 
 

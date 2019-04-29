@@ -34,7 +34,6 @@ public class FireSpawner : MonoBehaviour
         GameObject toInstantiate = victimsTiles [Random.Range (0, victimsTiles.Length)];
         if(bubble.transform.childCount > 2) {
           //has already player
-          Debug.Log("on est al");
           Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
           return;
         }
