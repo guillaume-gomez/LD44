@@ -33,14 +33,10 @@ public class Housing : MonoBehaviour
         timerText.text = victim.GetCurrentTimerString();
         if(victim.GetCurrentTimer() < 0.0f)
         {
-           DestroyVictimAndHud();
-           bubbleObject.SetActive(false);
+          DestroyVictimAndHud();
+          bubbleObject.SetActive(false);
         }
-      } else if(HasFire())
-      {
-        GameManager.instance.EditKarma(-GameManager.letBuildingBurn);
       }
-
     }
 
     public GameObject GetBubble()
@@ -94,6 +90,11 @@ public class Housing : MonoBehaviour
       //destroy the Victim
       Destroy(bubbleObject.transform.GetChild(2).gameObject);
       GameManager.instance.EditKarma(-GameManager.noSaveVictim);
+
+      fireObject.SetActive(false);
+      Color fireColorBase = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+      fireColor = fireColorBase;
+      fireObject.GetComponent<Renderer> ().material.color = fireColorBase;
     }
 
     private IEnumerator FadeFireAlpha(float startAlpha, float endAlpha, GameObject fireObject)
