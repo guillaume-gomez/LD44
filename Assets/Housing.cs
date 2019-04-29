@@ -8,18 +8,36 @@ public class Housing : MonoBehaviour
     public GameObject bubbleObject;
 
     private Color fireColor;
+    private TextMesh timerText;
     // Start is called before the first frame update
     void Start()
     {
       fireObject.SetActive(false);
       fireColor = fireObject.GetComponent<Renderer> ().material.color;
       bubbleObject.SetActive(false);
+      timerText = bubbleObject.transform.GetChild(1).GetComponent<TextMesh>();
+
       GameManager.instance.AddHousingToList(this);
     }
 
     // Update is called once per frame
     void Update()
     {
+      // we assume that victim is the third items
+      if(bubbleObject.transform.childCount > 2)
+      {
+        Victim victim = bubbleObject.transform.GetChild(2).GetComponent<Victim>();
+        if(victim)
+        {
+          timerText.text = victim.GetCurrentTimerString();
+          if(victim.GetCurrentTimer() < 0.0f)
+          {
+             DestroyVictimAndHud();
+             bubbleObject.SetActive(false);
+          }
+        }
+      }
+
     }
 
     public GameObject GetBubble()
@@ -50,8 +68,20 @@ public class Housing : MonoBehaviour
 
     private void AddMoney()
     {
-      Victim currentVictim = bubbleObject.transform.GetChild(0).GetComponent<Victim>();
-      GameManager.instance.AddMoney(currentVictim.price);
+      //texts are inserted in the bubbleObjectHierarchy, so Victim is the third item
+      Victim currentVictim = bubbleObject.transform.GetChild(2).GetComponent<Victim>();
+      if(currentVictim)
+      {
+        GameManager.instance.AddMoney(currentVictim.price);
+      }
+    }
+
+    private void DestroyVictimAndHud()
+    {
+      foreach (Transform child in bubbleObject.transform)
+      {
+        Destroy(child.gameObject);
+      }
     }
 
     private IEnumerator FadeFireAlpha(float startAlpha, float endAlpha, GameObject fireObject)
