@@ -71,12 +71,23 @@ using UnityEngine.SceneManagement;
 			{
 				vertical = 0;
 			}
+
+      if(Input.GetButtonDown("Jump"))
+      {
+        PutOutFire();
+        return;
+      }
 			//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 #elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
 
 			//Check if Input has registered more than zero touches
 			if (Input.touchCount > 0)
 			{
+        if(touch.tapCount == 2)
+        {
+          PutOutFire();
+          return;
+        }
 				//Store the first touch detected.
 				Touch myTouch = Input.touches[0];
 
