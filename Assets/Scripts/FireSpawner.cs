@@ -26,6 +26,7 @@ public class FireSpawner : MonoBehaviour
 
     private void SpawnFire() {
       Housing house = GameManager.instance.GetRandomHousing();
+      Debug.Log("SpawnFire");
       if(house != null && !house.HasFire())
       {
         house.Fire();
@@ -34,6 +35,7 @@ public class FireSpawner : MonoBehaviour
         GameObject toInstantiate = victimsTiles [Random.Range (0, victimsTiles.Length)];
         if(bubble.transform.childCount > 3) {
           //has already player
+          Debug.Log("already one");
           Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
           return;
         }
@@ -62,9 +64,6 @@ public class FireSpawner : MonoBehaviour
       //LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
 
       //next call
-      if(GameManager.instance.gameObject.activeSelf)
-      {
-        Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
-      }
+      Invoke ("SpawnFire", Random.Range (spawnMin, spawnMax));
     }
 }
