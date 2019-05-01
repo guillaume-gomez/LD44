@@ -4,8 +4,15 @@ using UnityEngine.UI;	//Allows us to use UI.
 using UnityEngine.SceneManagement;
 
 	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
-	public class Player : MovingObject
+	public class Player : MonoBehaviour
 	{
+
+	  public float speed = 1.0f;
+    public LayerMask blockingLayer;
+
+    private Rigidbody2D rb2D;
+    private BoxCollider2D boxCollider;
+    private bool IsMovingToFinish;
 
 		private const int RIGHT = 0;
 		private const int LEFT  = 1;
@@ -13,9 +20,6 @@ using UnityEngine.SceneManagement;
 		private const int DOWN  = 3;
 
 		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.
-		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.
-		public int pointsPerSoda = 20;				//Number of points to add to player food points when picking up a soda object.
-		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.
 		public AudioClip moveSound1;				//1 of 2 Audio clips to play when player moves.
 		public AudioClip moveSound2;				//2 of 2 Audio clips to play when player moves.
 		public AudioClip gameOverSound;				//Audio clip to play when player dies.
@@ -27,23 +31,20 @@ using UnityEngine.SceneManagement;
 #endif
 
 
-		//Start overrides the Start function of MovingObject
-		protected override void Start ()
+		void Start ()
 		{
-			//Get a component reference to the Player's animator component
 			animator = GetComponent<Animator>();
 
-			//Call the Start function of the MovingObject base class.
-			base.Start ();
+		  boxCollider = GetComponent<BoxCollider2D>();
+      rb2D = GetComponent<Rigidbody2D>();
+      IsMovingToFinish = false;
 		}
 
 
-		//This function is called when the behaviour becomes disabled or inactive.
-		private void OnDisable ()
-		{
-			//When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
-			//GameManager.instance.playerFoodPoints = food;
-		}
+    void FixedUpdate()
+    {
+
+    }
 
 
 		private void Update ()
@@ -68,14 +69,9 @@ using UnityEngine.SceneManagement;
 
       if(Input.GetButtonDown("Jump"))
       {
-      	Debug.Log("JUMP pressed");
-        PutOutFire();
+      	PutOutFire();
         return;
       }
-
-      //If it's not the player's turn, exit the function.
-			if(!GameManager.instance.playersTurn) return;
-
 
 			//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 #elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -88,9 +84,6 @@ using UnityEngine.SceneManagement;
           PutOutFire();
           return;
         }
-
-        //If it's not the player's turn, exit the function.
-				if(!GameManager.instance.playersTurn) return;
 
 				//Store the first touch detected.
 				Touch myTouch = Input.touches[0];
@@ -137,7 +130,7 @@ using UnityEngine.SceneManagement;
 			{
 				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
-				AttemptMove<Wall> (horizontal, vertical);
+				Move(horizontal, vertical);
 			} else
       {
         animator.SetBool("isMoving", false);
@@ -146,16 +139,18 @@ using UnityEngine.SceneManagement;
 
 		//AttemptMove overrides the AttemptMove function in the base class MovingObject
 		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
-		protected override void AttemptMove <T> (int xDir, int yDir)
+		void Move(int xDir, int yDir)
 		{
-			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
-			base.AttemptMove <T> (xDir, yDir);
-
-			//Hit allows us to reference the result of the Linecast done in Move.
-			RaycastHit2D hit;
+      RaycastHit2D hit;
+      Vector2 movement = new Vector2(xDir, yDir);
+      Vector2 start = transform.position;
+      Vector2 end = start + (movement * speed * Time.fixedDeltaTime);
+      boxCollider.enabled = false;
+      hit = Physics2D.Linecast(start, end, blockingLayer);
+      boxCollider.enabled = true;
 
 			//If Move returns true, meaning Player was able to move into an empty space.
-			if (Move (xDir, yDir, out hit))
+			if (hit.transform == null)
 			{
         if(xDir != 0)
         {
@@ -166,28 +161,11 @@ using UnityEngine.SceneManagement;
           animator.SetInteger("playerDirection", direction);
         }
         animator.SetBool("isMoving", true);
+        rb2D.MovePosition(end);
 				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
-				SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+				//SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
 			}
-			//Set the playersTurn boolean of GameManager to false now that players turn is over.
-			GameManager.instance.playersTurn = false;
 		}
-
-
-		//OnCantMove overrides the abstract function OnCantMove in MovingObject.
-		//It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.
-		protected override void OnCantMove <T> (T component)
-		{
-			//Set hitWall to equal the component passed in as a parameter.
-			Wall hitWall = component as Wall;
-
-			//Call the DamageWall function of the Wall we are hitting.
-			hitWall.DamageWall (wallDamage);
-
-			//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-			animator.SetTrigger ("playerChop");
-		}
-
 
 		//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).
 		private void OnTriggerEnter2D (Collider2D other)
@@ -223,20 +201,6 @@ using UnityEngine.SceneManagement;
           Instantiate (waterPrefab, new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + 4.0f, 0f), Quaternion.identity) as GameObject;
       instance.transform.SetParent (gameObject.transform);
 			Invoke("EndInteract", 2.0f);
-		}
-
-
-		//LoseFood is called when an enemy attacks the player.
-		//It takes a parameter loss which specifies how many points to lose.
-		public void LoseFood (int loss)
-		{
-			//Set the trigger for the player animator to transition to the playerHit animation.
-			//animator.SetTrigger ("playerHit");
-
-			//Subtract lost food points from the players total.
-
-			//Update the food display with the new total.
-			//foodText.text = "-"+ loss + " Food: " + food;
 		}
 
 
