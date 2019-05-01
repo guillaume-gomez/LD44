@@ -25,8 +25,7 @@ using System.Collections;
     private int level = 0;									//Current level number, expressed in game as "Day 1".
 		private List<Enemy> enemies;							//List of all Enemy units, used to issue them move commands.
 		private List<Housing> housings;
-    private bool enemiesMoving;								//Boolean to check if enemies are moving.
-		private bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
+    private bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
     private int money = 0;
     private float karma = 1.0f;
 		//Awake is always called before any Start functions
@@ -64,8 +63,8 @@ using System.Collections;
         MenuUI.SetActive(false);
       }
       //uncomment this on standalone
-      //level = 1;
-      //InitGame();
+      level = 1;
+      InitGame();
       /////
 		}
 
@@ -138,8 +137,6 @@ using System.Collections;
 			//Set doingSetup to false allowing player to move again.
 			doingSetup = false;
       playersTurn = true;
-      enemiesMoving = false;
-
       timerInGame = GameObject.Find("MyTimer").GetComponent<Timer>();
       timerInGame.StartTimer();
 		}
@@ -148,14 +145,11 @@ using System.Collections;
 		void Update()
 		{
 			//Check that playersTurn or enemiesMoving or doingSetup are not currently true.
-			if(playersTurn || enemiesMoving || doingSetup)
+			if(doingSetup)//if(playersTurn || enemiesMoving || doingSetup)
 			{
         //If any of these are true, return and do not start MoveEnemies.
 				return;
       }
-
-			//Start moving enemies.
-			StartCoroutine (MoveEnemies ());
 		}
 		//Call this to add the passed in Enemy to the List of Enemy objects.
 		public void AddEnemyToList(Enemy script)
@@ -215,36 +209,4 @@ using System.Collections;
       }
       return housings[Random.Range(0, housings.Count)];
     }
-
-		//Coroutine to move enemies in sequence.
-		IEnumerator MoveEnemies()
-		{
-			//While enemiesMoving is true player is unable to move.
-			enemiesMoving = true;
-
-			//Wait for turnDelay seconds, defaults to .1 (100 ms).
-			yield return new WaitForSeconds(turnDelay);
-
-			//If there are no enemies spawned (IE in first level):
-			if (enemies.Count == 0)
-			{
-				//Wait for turnDelay seconds between moves, replaces delay caused by enemies moving when there are none.
-				yield return new WaitForSeconds(turnDelay);
-			}
-
-			//Loop through List of Enemy objects.
-			for (int i = 0; i < enemies.Count; i++)
-			{
-				//Call the MoveEnemy function of Enemy at index i in the enemies List.
-				enemies[i].MoveEnemy ();
-
-				//Wait for Enemy's moveTime before moving next Enemy,
-				yield return new WaitForSeconds(enemies[i].moveTime);
-			}
-			//Once Enemies are done moving, set playersTurn to true so player can move.
-			playersTurn = true;
-
-			//Enemies are done moving, set enemiesMoving to false.
-			enemiesMoving = false;
-		}
 	}
