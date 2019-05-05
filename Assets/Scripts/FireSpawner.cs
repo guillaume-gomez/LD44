@@ -26,7 +26,6 @@ public class FireSpawner : MonoBehaviour
 
     private void SpawnFire() {
       Housing house = GameManager.instance.GetRandomHousing();
-      Debug.Log("SpawnFire");
       if(house != null && !house.HasFire())
       {
         house.Fire();
