@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Notification : MonoBehaviour
 {
-    private float distance = 20.0f;
-    private float distanceToDisplay = 40.0f;
     private GameObject cameraRef;
-    private Transform target;
+    private Renderer parentRenderer;
     private float cameraWidth;
     private float cameraHeight;
 
@@ -15,8 +13,9 @@ public class Notification : MonoBehaviour
     void Start()
     {
       cameraRef = GameObject.FindWithTag("MainCamera");
+      parentRenderer = transform.parent.GetComponent<Renderer>();
+
       Camera camera = cameraRef.GetComponent<Camera>();
-      // find the parent target
       cameraHeight = 2.0f * camera.orthographicSize;
       cameraWidth = cameraHeight * camera.aspect;
     }
@@ -24,20 +23,20 @@ public class Notification : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      Vector2 cameraPosition = cameraRef.transform.position;
-      Vector2 parentPosition = transform.parent.transform.position;
-      Vector2 hypothenuse = new Vector2(parentPosition.x - cameraPosition.x, parentPosition.y - cameraPosition.y);
-      hypothenuse.Normalize();
-
-      Vector2 newPosition = hypothenuse * distanceToDisplay;
-      //Debug.Log(newPosition);
-      //Debug.Log(transform.position);
-      Debug.Log(cameraPosition);
-      transform.position = cameraPosition + hypothenuse;
-      /*if(Vector2.Distance(parentPosition, cameraPosition) < distance) {
+      if(parentRenderer.isVisible) {
         gameObject.SetActive(false);
       } else {
+        Vector2 cameraPosition = cameraRef.transform.position;
+        Vector2 parentPosition = transform.parent.transform.position;
+        Vector2 hypothenuse = new Vector2(parentPosition.x - cameraPosition.x, parentPosition.y - cameraPosition.y);
+        hypothenuse.Normalize();
+
+        Vector2 originHeight = new Vector2(0.0f, cameraHeight/2.0f);
+        Vector2 originWidth = new Vector2(cameraWidth/2.0f, 0.0f);
+
+        Vector2 newPosition = new Vector2(Vector2.Dot(originWidth, hypothenuse), Vector2.Dot(originHeight, hypothenuse));
+        transform.position = cameraPosition + newPosition;
         gameObject.SetActive(true);
-      }*/
+      }
     }
 }
