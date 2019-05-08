@@ -197,7 +197,7 @@ using UnityEngine.SceneManagement;
       float waterWidth = 4.6f;
       float direction = animator.GetInteger("playerDirection");
       float waterRotation = 0.0f;
-      int sortingOrder = 0;
+      int sortingOrder = 1;
       Vector3 waterPosition = new Vector3();
 
       switch(direction)
@@ -217,7 +217,7 @@ using UnityEngine.SceneManagement;
         case DOWN:
           waterPosition = new Vector3(gameObject.transform.position.x - 0.3f, gameObject.transform.position.y - waterWidth + 0.3f, 0f);
           waterRotation = 180.0f;
-          sortingOrder = 1;
+          sortingOrder = gameObject.GetComponent<Renderer>().sortingOrder + 100;
         break;
       }
 
