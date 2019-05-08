@@ -192,12 +192,12 @@ using UnityEngine.SceneManagement;
 
 		public void PutOutFire()
 		{
-			animator.SetBool("isMoving", true);
+			//animator.SetBool("isMoving", true);
       //animator.SetInteger("playerDirection", UP);
-
       float waterWidth = 4.6f;
       float direction = animator.GetInteger("playerDirection");
       float waterRotation = 0.0f;
+      int sortingOrder = 0;
       Vector3 waterPosition = new Vector3();
 
       switch(direction)
@@ -215,8 +215,9 @@ using UnityEngine.SceneManagement;
           waterRotation = 0.0f;
         break;
         case DOWN:
-          waterPosition = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - waterWidth +0.3f, 0f);
+          waterPosition = new Vector3(gameObject.transform.position.x - 0.3f, gameObject.transform.position.y - waterWidth + 0.3f, 0f);
           waterRotation = 180.0f;
+          sortingOrder = 1;
         break;
       }
 
@@ -224,6 +225,7 @@ using UnityEngine.SceneManagement;
       GameObject instance =
           Instantiate (waterPrefab, waterPosition, Quaternion.identity) as GameObject;
       instance.transform.Rotate(0.0f, 0.0f, waterRotation);
+      instance.GetComponent<Renderer>().sortingOrder = sortingOrder;
       instance.transform.SetParent (gameObject.transform);
 			Invoke("EndInteract", 2.0f);
 		}
