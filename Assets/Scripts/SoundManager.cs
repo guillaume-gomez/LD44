@@ -49,6 +49,10 @@ using System.Collections;
 		//RandomizeSfx chooses randomly between various audio clips and slightly changes their pitch.
 		public void RandomizeSfx (params AudioClip[] clips)
 		{
+			if(efxSource.isPlaying)
+			{
+				return;
+			}
 			//Generate a random number between 0 and the length of our array of clips passed in.
 			int randomIndex = Random.Range(0, clips.Length);
 
