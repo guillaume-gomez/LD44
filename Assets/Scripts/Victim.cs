@@ -9,7 +9,7 @@ public class Victim : MonoBehaviour
     public float distance = 0;
     public float karma = 0;
     public float duration = 0;
-    public AudioClip helpAudio;
+    public string soundName;
 
     private float startTimer;
     private float currentTime;
@@ -48,6 +48,6 @@ public class Victim : MonoBehaviour
 
     private void PlayHelp()
     {
-        SoundManager.instance.PlaySingle(helpAudio);
+        AudioManager.instance.PlaySound(soundName, gameObject.transform.position);
     }
 }

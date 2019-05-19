@@ -6,12 +6,10 @@ public class Housing : MonoBehaviour
 {
     public GameObject fireObject;
     public GameObject bubbleObject;
+    public GameObject notificationObject;
 
     private Color fireColor;
     private TextMesh timerText;
-
-    public AudioClip fireStartAudio;
-    public AudioClip fireEndAudio;
     //public AudioClip VictimDiedAudio;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +17,8 @@ public class Housing : MonoBehaviour
       fireObject.SetActive(false);
       fireColor = fireObject.GetComponent<Renderer> ().material.color;
       bubbleObject.SetActive(false);
+      notificationObject.SetActive(false);
+
       timerText = bubbleObject.transform.GetChild(2).GetComponent<TextMesh>();
 
       GameManager.instance.AddHousingToList(this);
@@ -62,7 +62,8 @@ public class Housing : MonoBehaviour
     {
       fireObject.SetActive(true);
       bubbleObject.SetActive(true);
-      SoundManager.instance.PlayOnLoop(fireStartAudio);
+      notificationObject.SetActive(true);
+      AudioManager.instance.PlaySound("fire", gameObject.transform.position);
     }
 
     public void PutOutFire()
@@ -93,6 +94,7 @@ public class Housing : MonoBehaviour
       GameManager.instance.EditKarma(-GameManager.noSaveVictim);
 
       fireObject.SetActive(false);
+      notificationObject.SetActive(false);
       Color fireColorBase = new Color(1.0f, 1.0f, 1.0f, 0.0f);
       fireColor = fireColorBase;
       fireObject.GetComponent<Renderer> ().material.color = fireColorBase;
@@ -114,7 +116,7 @@ public class Housing : MonoBehaviour
           fireObject.GetComponent<Renderer> ().material.color = fireColor;
           yield return null;
       }
-      SoundManager.instance.PlaySingle(fireEndAudio);
+      AudioManager.instance.PlaySound("fireStop", gameObject.transform.position);
       bubbleObject.SetActive(false);
       fireObject.SetActive(false);
 

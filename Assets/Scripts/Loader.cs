@@ -5,6 +5,7 @@ using System.Collections;
 	{
 		public GameObject gameManager;			//GameManager prefab to instantiate.
 		public GameObject soundManager;			//SoundManager prefab to instantiate.
+		public GameObject audioManager;
 
 		void Awake ()
 		{
@@ -21,6 +22,13 @@ using System.Collections;
 				//Instantiate SoundManager prefab
 				Instantiate(soundManager);
 			}
+
+			/*//Check if a SoundManager has already been assigned to static variable GameManager.instance or if it's still null
+			if (AudioManager.instance == null)
+			{
+				//Instantiate SoundManager prefab
+				Instantiate(audioManager);
+			}*/
 
 		}
 	}

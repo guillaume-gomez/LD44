@@ -3,11 +3,9 @@
 
 public class Water : MonoBehaviour {
     public float delay = 0.5f;
-    public AudioClip waterSound;
-
      // Use this for initialization
     void Start () {
-      SoundManager.instance.PlaySingle(waterSound);
+      AudioManager.instance.PlaySound("splash", gameObject.transform.position);
       Destroy (gameObject, this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length * delay);
     }
 }

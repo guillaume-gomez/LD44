@@ -163,7 +163,7 @@ using UnityEngine.SceneManagement;
         animator.SetBool("isMoving", true);
         rb2D.MovePosition(end);
 				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
-				//SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+        SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
 			}
 		}
 
@@ -192,13 +192,40 @@ using UnityEngine.SceneManagement;
 
 		public void PutOutFire()
 		{
-			Debug.Log("PutOutFire");
-			animator.SetBool("isMoving", true);
-      animator.SetInteger("playerDirection", UP);
+			//animator.SetBool("isMoving", true);
+      //animator.SetInteger("playerDirection", UP);
+      float waterWidth = 4.6f;
+      float direction = animator.GetInteger("playerDirection");
+      float waterRotation = 0.0f;
+      int sortingOrder = 1;
+      Vector3 waterPosition = new Vector3();
+
+      switch(direction)
+      {
+        case RIGHT:
+          waterPosition = new Vector3(gameObject.transform.position.x + waterWidth, gameObject.transform.position.y, 0f);
+          waterRotation = -90.0f;
+        break;
+        case LEFT:
+          waterPosition = new Vector3(gameObject.transform.position.x - waterWidth, gameObject.transform.position.y, 0f);
+          waterRotation = 90.0f;
+        break;
+        case UP:
+          waterPosition = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + waterWidth, 0f);
+          waterRotation = 0.0f;
+        break;
+        case DOWN:
+          waterPosition = new Vector3(gameObject.transform.position.x - 0.3f, gameObject.transform.position.y - waterWidth + 0.3f, 0f);
+          waterRotation = 180.0f;
+          sortingOrder = gameObject.GetComponent<Renderer>().sortingOrder + 100;
+        break;
+      }
 
 			enabled = false;
       GameObject instance =
-          Instantiate (waterPrefab, new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + 4.0f, 0f), Quaternion.identity) as GameObject;
+          Instantiate (waterPrefab, waterPosition, Quaternion.identity) as GameObject;
+      instance.transform.Rotate(0.0f, 0.0f, waterRotation);
+      instance.GetComponent<Renderer>().sortingOrder = sortingOrder;
       instance.transform.SetParent (gameObject.transform);
 			Invoke("EndInteract", 2.0f);
 		}

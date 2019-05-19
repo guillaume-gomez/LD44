@@ -150,6 +150,11 @@ using System.Collections;
         //If any of these are true, return and do not start MoveEnemies.
 				return;
       }
+
+      if (Input.GetKey ("escape"))
+      {
+        Application.Quit();
+      }
 		}
 		//Call this to add the passed in Enemy to the List of Enemy objects.
 		public void AddEnemyToList(Enemy script)
