@@ -73,6 +73,7 @@ public class AudioManager : MonoBehaviour
 
     //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
     DontDestroyOnLoad (gameObject);
+    Initialize();
   }
 
   public void Initialize()
@@ -81,21 +82,22 @@ public class AudioManager : MonoBehaviour
     soundTimerDictionary["footstep"] = 0.0f;
   }
 
-  private AudioClip GetAudioClip(string _name)
+  private Sound GetAudioClip(string _name)
   {
     for(int i = 0; i < sounds.Length; i++)
     {
       if(sounds[i].name == _name)
       {
-        return sounds[i].clip;
+        return sounds[i];
       }
     }
     Debug.LogWarning("AudioManager: Sound not found in list, " + _name);
     return null;
   }
 
-  public void PlaySound(Sound sound)
+  public void PlaySound(string soundName)
   {
+    Sound sound = GetAudioClip(soundName);
     if(CanPlaySound(sound))
     {
       if(oneShotGameObject == null)
@@ -109,8 +111,9 @@ public class AudioManager : MonoBehaviour
     }
   }
 
-  public void PlaySound(Sound sound, Vector3 position)
+  public void PlaySound(string soundName, Vector3 position)
   {
+    Sound sound = GetAudioClip(soundName);
     if(CanPlaySound(sound))
     {
       GameObject soundGameObject = new GameObject("Sound_" + sound.name);
@@ -134,7 +137,7 @@ public class AudioManager : MonoBehaviour
         if(soundTimerDictionary.ContainsKey(sound.name))
         {
           float lastTimePlayed = soundTimerDictionary[sound.name];
-          float playerMoveTimerMax = 0.05f;
+          float playerMoveTimerMax = 0.25f;
           if(lastTimePlayed + playerMoveTimerMax < Time.time)
           {
             soundTimerDictionary[sound.name] = Time.time;
