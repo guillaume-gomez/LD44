@@ -24,3 +24,7 @@ We decided to make a game where the price of life is competing with the cost of 
 | Florian Escuer | Graphics |
 | Aurelien Montero | Sound Design |
 | Guillaume Gomez | Programming |
+
+# Result
+
+![result.png](result.png)

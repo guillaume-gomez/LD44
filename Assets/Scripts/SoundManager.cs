@@ -5,7 +5,6 @@ using System.Collections;
 	public class SoundManager : MonoBehaviour
 	{
 		public AudioSource efxSource;					//Drag a reference to the audio source which will play the sound effects.
-		public AudioSource elfxSource;
 		public AudioSource musicSource;					//Drag a reference to the audio source which will play the music.
 
 		public static SoundManager instance = null;		//Allows other scripts to call functions from SoundManager.
@@ -38,13 +37,6 @@ using System.Collections;
 			//Play the clip.
 			efxSource.Play ();
 		}
-
-		public void PlayOnLoop(AudioClip clip)
-		{
-			elfxSource.clip = clip;
-			elfxSource.Play();
-		}
-
 
 		//RandomizeSfx chooses randomly between various audio clips and slightly changes their pitch.
 		public void RandomizeSfx (params AudioClip[] clips)

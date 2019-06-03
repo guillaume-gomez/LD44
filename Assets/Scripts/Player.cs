@@ -163,8 +163,9 @@ using UnityEngine.SceneManagement;
         animator.SetBool("isMoving", true);
         rb2D.MovePosition(end);
 				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
-        SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
-			}
+        //SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+			  AudioManager.instance.PlaySound("footstep",gameObject.transform.position);
+      }
 		}
 
 		//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).
@@ -236,7 +237,7 @@ using UnityEngine.SceneManagement;
 		{
 			//Check if food point total is less than or equal to zero.
 				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
-				SoundManager.instance.PlaySingle (gameOverSound);
+				AudioManager.instance.PlaySound ("endGame");
 
 				//Stop the background music.
 				SoundManager.instance.musicSource.Stop();
