@@ -4,7 +4,9 @@
 
 Omg, the new mayor decided some new budgetary cuts this year for the fire department, if you want to keep your job you will have to prioritize your rescue. Big Donations come from big donors, you will have to save the wealthy first ! But don't overdo it or wage-worker might notice it and you will get fired too. Good luck Hero !
 
-[Try Online](https://guillaume-gomez.github.io/LD44/Build/)
+[Try Online](https://guillaume-gomez.github.io/LD44/Build/postMortemLudumDare/)
+
+[LD version](https://guillaume-gomez.github.io/LD44/Build/ludumDare/)
 
 ![gif](2214f.gif)
 
